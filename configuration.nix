@@ -1,0 +1,122 @@
+{ lib, pkgs, ... }@args:
+
+let
+  serial = import ./helpers/serial.nix;
+  users = import ./home args;
+
+  interface = "enp1s0f0";
+in
+{
+  # initial version, not the current version. NEVER EVER EDIT ME!
+  system.stateVersion = "24.05";
+
+  imports = [
+    <home-manager/nixos>
+  ];
+
+  boot = {
+    # make following modules available in initrd (optional)
+    initrd.availableKernelModules = [ "xhci_pci" "ehci_pci" "ahci" "firewire_ohci" "usbhid" "sd_mod" "sr_mod" "sdhci_pci" ];
+    # force these modules in initrd
+    initrd.kernelModules = [ ];
+    # modules enabled in kernel-space
+    kernelModules = [ "kvm-intel" ];
+    # extra modules from nixpkg
+    extraModulePackages = [ ];
+
+    loader = {
+      systemd-boot.enable = true;
+      efi.canTouchEfiVariables = true;
+    };
+  };
+
+  fileSystems = {
+    "/" = {
+      device = "/dev/disk/by-label/nixos";
+      fsType = "ext4";
+    };
+
+    "/boot" = {
+      device = "/dev/disk/by-label/BOOT";
+      fsType = "vfat";
+      options = [ "fmask=0022" "dmask=0022" ];
+    };
+  };
+
+  swapDevices = [
+    {
+      device = "/dev/disk/by-label/swap";
+    }
+  ];
+
+  nixpkgs.hostPlatform = "x86_64-linux";
+
+  networking = {
+    # Use DHCP on all interfaces
+    # useDHCP = true;
+
+    # my hostname depends on the machine
+    hostName = "evajig-" + (serial interface);
+
+    # just use NetworkManager, it's easy!
+    networkmanager.enable = true;
+  };
+
+  # We're in Amsterdam, mien jung
+  time.timeZone = "Europe/Amsterdam";
+
+  # Configure network proxy if necessary
+  # networking.proxy.default = "http://user:password@proxy:port/";
+  # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
+
+  # Select internationalisation properties.
+  i18n.defaultLocale = "en_US.UTF-8";
+  console = {
+    # font = "Lat2-Terminus16";
+    # keyMap = "us";
+    useXkbConfig = true; # use xkb.options in tty.
+  };
+
+  nixpkgs.config = {
+    allowUnfree = true;
+    permittedInsecurePackages = [
+      "segger-jlink-qt4-796s"
+    ];
+    segger-jlink.acceptLicense = true;
+  };
+
+  services = {
+    # Enable the X11 windowing system.
+    xserver = {
+      enable = true;
+      displayManager.startx.enable = true;
+      windowManager.openbox.enable = true;
+
+      # Configure keymap in X11
+      xkb.layout = "us";
+      xkb.options = "eurosign:e,caps:escape";
+    };
+    # Enable CUPS to print documents.
+    # services.printing.enable = true;
+
+    # Enable touchpad support (enabled default in most desktopManager).
+    libinput.enable = true;
+
+    openssh.enable = true;
+
+    getty.autologinUser = "evajig";
+  };
+
+  hardware.pulseaudio.enable = true;
+
+  environment.systemPackages = with pkgs; [
+    vim
+    wget
+  ];
+
+  programs.zsh.enable = true;
+
+  users.users = pkgs.lib.mergeAttrsList (map (u: { "${u.name}" = u.user; }) users);
+  home-manager.users = pkgs.lib.mergeAttrsList (map (u: { "${u.name}" = ({...}: u.home-manager); }) users);
+}
+
