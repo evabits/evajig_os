@@ -1,0 +1,6 @@
+#!/bin/sh
+
+evajig-productiontool &
+xterm &
+
+exec openbox

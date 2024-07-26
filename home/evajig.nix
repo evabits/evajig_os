@@ -1,8 +1,9 @@
 { pkgs, ... }@args:
 
-let 
+let
   productiontool = (import ../pkgs/productiontool.nix args);
-in rec {
+in
+rec {
   name = "evajig";
 
   user = {
@@ -24,6 +25,7 @@ in rec {
 
     home.packages = with pkgs; [
       productiontool
+      networkmanagerapplet # -> nm-connection-editor
     ];
 
     home.sessionVariables = {
@@ -31,17 +33,8 @@ in rec {
     };
 
     home.file = {
-      ".xinitrc" = {
-        text = ''
-          #!/bin/sh
-
-          evajig-productiontool &
-          xterm &
-
-          exec openbox
-        '';
-        executable = true;
-      };
+      ".xinitrc".source = ../files/xinitrc;
+      ".config/openbox".source = ../files/openbox;
     };
 
     programs.zsh = {
