@@ -5,7 +5,8 @@ let
   users = import ./home args;
 
   interface = "wlp170s0";
-in {
+in
+{
   # initial version, not the current version. NEVER EVER EDIT ME!
   system.stateVersion = "24.05";
 
@@ -19,9 +20,9 @@ in {
     # force these modules in initrd
     initrd.kernelModules = [ ];
     # modules enabled in kernel-space
-    kernelModules = [ "kvm-intel"  "iwlwifi" ];
+    kernelModules = [ "kvm-intel" "iwlwifi" ];
     # extra modules from nixpkg
-    extraModulePackages = [];
+    extraModulePackages = [ ];
 
     loader = {
       systemd-boot.enable = true;
@@ -45,18 +46,9 @@ in {
       ];
     };
 
+    consoleLogLevel = 0;
+    initrd.verbose = false;
     kernelParams = [
-      "splash"
-    ];
-
-    #    kernelPackages = pkgs.linuxPackages_latest;
-
-    /*
-
-      # Enable "Silent Boot"
-      consoleLogLevel = 0;
-      initrd.verbose = false;
-      kernelParams = [
       "quiet"
       "splash"
       "boot.shell_on_fail"
@@ -64,8 +56,9 @@ in {
       "rd.systemd.show_status=false"
       "rd.udev.log_level=3"
       "udev.log_priority=3"
-    ];  */
+    ];
 
+    kernelPackages = pkgs.linuxPackages_latest;
   };
 
 
@@ -144,12 +137,15 @@ in {
     getty.autologinUser = "evajig";
   };
 
+  services.udev.extraRules = builtins.readFile files/udev.rules;
+
   hardware.pulseaudio.enable = true;
 
   environment.systemPackages = with pkgs; [
     vim
     wget
     pciutils
+    usbutils
   ];
 
   hardware.firmware = with pkgs; [
