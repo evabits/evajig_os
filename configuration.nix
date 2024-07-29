@@ -15,12 +15,9 @@ in
   ];
 
   boot = {
-    # make following modules available in initrd (optional)
-    initrd.availableKernelModules = [ "xhci_pci" "ehci_pci" "ahci" "firewire_ohci" "usbhid" "sd_mod" "sr_mod" "sdhci_pci" ];
-    # force these modules in initrd
-    initrd.kernelModules = [ ];
+    initrd.availableKernelModules = [ "xhci_pci" "sdhci_pci" ];
     # modules enabled in kernel-space
-    kernelModules = [ "kvm-intel" "iwlwifi" ];
+    kernelModules = [ "iwlwifi" ];
     # extra modules from nixpkg
     extraModulePackages = [ ];
 
@@ -37,12 +34,9 @@ in
 
     plymouth = {
       enable = true;
-      theme = "rings";
+      theme = "evajig";
       themePackages = with pkgs; [
-        # By default we would install all themes
-        (adi1090x-plymouth-themes.override {
-          selected_themes = [ "rings" ];
-        })
+        (import pkgs/plymouth-evajig.nix { })
       ];
     };
 
@@ -153,6 +147,13 @@ in
   ];
 
   programs.zsh.enable = true;
+
+  systemd.sleep.extraConfig = ''
+    AllowSuspend=no
+    AllowHibernation=no
+    AllowHybridSleep=no
+    AllowSuspendThenHibernate=no
+  '';
 
   users.users = lib.mergeAttrsList (map (u: { "${u.name}" = u.user; }) users);
   home-manager.users = lib.mergeAttrsList (map (u: { "${u.name}" = ({ ... }: u.home-manager); }) users);
