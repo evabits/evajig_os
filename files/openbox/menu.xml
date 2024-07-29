@@ -7,7 +7,12 @@
     <action name="Execute"><command>evajig-productiontool</command></action>
   </item>
 
+
   <separator />
+
+  <item label="Network Manager">
+    <action name="Execute"><command>nm-connection-editor</command></action>
+  </item>
 
   <item label="Firefox">
     <action name="Execute">
