@@ -10,7 +10,7 @@ rec {
     inherit name;
     isNormalUser = true;
     initialPassword = "evajig";
-    extraGroups = [ "networkmanager" ];
+    extraGroups = [ "networkmanager" "dialout" ];
     shell = pkgs.zsh;
     openssh.authorizedKeys.keyFiles = [
       ../keys/user-ssh-rsa.pub
@@ -28,7 +28,6 @@ rec {
       networkmanagerapplet # -> nm-connection-editor
       firefox
       xfce.thunar
-      obconf
     ];
 
     home.sessionVariables = {
