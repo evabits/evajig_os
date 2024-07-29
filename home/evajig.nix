@@ -26,6 +26,9 @@ rec {
     home.packages = with pkgs; [
       productiontool
       networkmanagerapplet # -> nm-connection-editor
+      firefox
+      xfce.thunar
+      obconf
     ];
 
     home.sessionVariables = {
