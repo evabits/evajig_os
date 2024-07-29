@@ -1,0 +1,17 @@
+SUBSYSTEM=="usb", ACTION=="add", ATTRS{idVendor}=="dcba", ATTRS{idProduct}=="abcd", TAG+="uaccess"
+
+# Dapprobe ?
+SUBSYSTEM=="usb", ACTION=="add", ATTRS{idVendor}=="2e8a", ATTRS{idProduct}=="0005", TAG+="uaccess"
+SUBSYSTEM=="usb", ACTION=="add", ATTRS{idVendor}=="1209", ATTRS{idProduct}=="da42", TAG+="uaccess"
+
+
+# Camera
+SUBSYSTEM=="usb", ACTION=="add", ATTRS{idVendor}=="dcba", ATTRS{idProduct}=="caca", TAG+="uaccess"
+SUBSYSTEM=="tty", ACTION=="add", ATTRS{idVendor}=="dcba", ATTRS{idProduct}=="caca", GROUP="dialout"
+SUBSYSTEM=="tty", ACTION=="add", ATTRS{idVendor}=="dcba", ATTRS{idProduct}=="aaaa", GROUP="dialout"
+SUBSYSTEM=="usb", ACTION=="add", ATTRS{idVendor}=="dcba", ATTRS{idProduct}=="aaaa", TAG+="uaccess"
+
+
+
+# IO Module DFU
+SUBSYSTEM=="tty", ACTION=="add", ATTRS{idVendor}=="2fe3", ATTRS{idProduct}=="0100", GROUP="dialout"
