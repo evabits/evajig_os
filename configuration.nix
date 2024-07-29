@@ -4,9 +4,8 @@ let
   serial = import ./helpers/serial.nix;
   users = import ./home args;
 
-  interface = "enp1s0f0";
-in
-{
+  interface = "wlp170s0";
+in {
   # initial version, not the current version. NEVER EVER EDIT ME!
   system.stateVersion = "24.05";
 
@@ -20,15 +19,55 @@ in
     # force these modules in initrd
     initrd.kernelModules = [ ];
     # modules enabled in kernel-space
-    kernelModules = [ "kvm-intel" ];
+    kernelModules = [ "kvm-intel"  "iwlwifi" ];
     # extra modules from nixpkg
-    extraModulePackages = [ ];
+    extraModulePackages = [];
 
     loader = {
       systemd-boot.enable = true;
       efi.canTouchEfiVariables = true;
+
+      # Hide the OS choice for bootloaders.
+      # It's still possible to open the bootloader list by pressing any key
+      # It will just not appear on screen unless a key is pressed
+      #timeout = 0;
     };
+
+
+    plymouth = {
+      enable = true;
+      theme = "rings";
+      themePackages = with pkgs; [
+        # By default we would install all themes
+        (adi1090x-plymouth-themes.override {
+          selected_themes = [ "rings" ];
+        })
+      ];
+    };
+
+    kernelParams = [
+      "splash"
+    ];
+
+    #    kernelPackages = pkgs.linuxPackages_latest;
+
+    /*
+
+      # Enable "Silent Boot"
+      consoleLogLevel = 0;
+      initrd.verbose = false;
+      kernelParams = [
+      "quiet"
+      "splash"
+      "boot.shell_on_fail"
+      "loglevel=3"
+      "rd.systemd.show_status=false"
+      "rd.udev.log_level=3"
+      "udev.log_priority=3"
+    ];  */
+
   };
+
 
   fileSystems = {
     "/" = {
@@ -96,8 +135,6 @@ in
       xkb.layout = "us";
       xkb.options = "eurosign:e,caps:escape";
     };
-    # Enable CUPS to print documents.
-    # services.printing.enable = true;
 
     # Enable touchpad support (enabled default in most desktopManager).
     libinput.enable = true;
@@ -112,11 +149,16 @@ in
   environment.systemPackages = with pkgs; [
     vim
     wget
+    pciutils
+  ];
+
+  hardware.firmware = with pkgs; [
+    linux-firmware
   ];
 
   programs.zsh.enable = true;
 
-  users.users = pkgs.lib.mergeAttrsList (map (u: { "${u.name}" = u.user; }) users);
-  home-manager.users = pkgs.lib.mergeAttrsList (map (u: { "${u.name}" = ({...}: u.home-manager); }) users);
+  users.users = lib.mergeAttrsList (map (u: { "${u.name}" = u.user; }) users);
+  home-manager.users = lib.mergeAttrsList (map (u: { "${u.name}" = ({ ... }: u.home-manager); }) users);
 }
 

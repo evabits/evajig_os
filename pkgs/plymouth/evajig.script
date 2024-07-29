@@ -1,0 +1,6 @@
+Window.SetBackgroundTopColor (0.0, 0.0, 0.0);    # Red, Green, Blue
+Window.SetBackgroundBottomColor (0.0, 0.0, 0.0); # Red, Green, Blue
+
+image = Image("evajig.svg");
+image.SetPosition("center", 0, 0);
+image.SetScale(1.0, 1.0);

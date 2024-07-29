@@ -1,0 +1,8 @@
+[Plymouth Theme]
+Name=EVAjig Theme
+Description=Simple EVAjig Theme
+ModuleName=script
+
+[script]
+ImageDir=/usr/share/plymouth/themes/evajig
+ScriptFile=/usr/share/plymouth/themes/evajig/evajig.script

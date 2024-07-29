@@ -8,7 +8,7 @@
 ## Wat is Nix?
 > niet niks he
 
-Nix is een programmeer-taal en een package-manager.
+Nix is een programmeertaal en een systeem- en package-manager.
 
 ```bash
 $ nix-channel --list

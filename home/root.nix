@@ -5,7 +5,6 @@ rec {
 
   user = {
     inherit name;
-    isNormalUser = true;
     initialPassword = "root";
     openssh.authorizedKeys.keyFiles = [
       ../keys/root-ssh-rsa.pub
@@ -18,7 +17,6 @@ rec {
     home.username = name;
     home.homeDirectory = "/root";
 
-    programs.zsh.enable = true;
     programs.home-manager.enable = true;
   };
 }
