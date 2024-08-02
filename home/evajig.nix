@@ -9,7 +9,7 @@ rec {
   user = {
     inherit name;
     isNormalUser = true;
-    initialPassword = "evajig";
+    initialPassword = "evajig2024";
     extraGroups = [ "networkmanager" "dialout" ];
     shell = pkgs.zsh;
     openssh.authorizedKeys.keyFiles = [

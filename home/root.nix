@@ -5,7 +5,7 @@ rec {
 
   user = {
     inherit name;
-    initialPassword = "root";
+    initialPassword = "Evajig2024";
     openssh.authorizedKeys.keyFiles = [
       ../keys/root-ssh-rsa.pub
     ];
