@@ -1,5 +1,10 @@
 # Getting Started
 
+## Requirements
+
+- a program to flash an ISO
+- some knowlegde about the Linux Shell
+
 ## 1. Make a bootable USB
 
 - Go to [nixos.org](https://nixos.org/download) and download the distribution ISO
