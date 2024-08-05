@@ -1,17 +1,17 @@
-{ lib, pkgs, ... }@args:
+{ pkgs, lib, device ? "/dev/sda", ... }@args:
 
 let
   serial = import ./helpers/serial.nix;
   users = import ./home args;
 
-  interface = "wlp170s0";
+  config = import <evajig-config> {};
 in
 {
   # initial version, not the current version. NEVER EVER EDIT ME!
   system.stateVersion = "24.05";
 
   imports = [
-    <home-manager/nixos>
+    #<home-manager/nixos>
   ];
 
   boot = {
@@ -55,26 +55,6 @@ in
     kernelPackages = pkgs.linuxPackages_latest;
   };
 
-
-  fileSystems = {
-    "/" = {
-      device = "/dev/disk/by-label/nixos";
-      fsType = "ext4";
-    };
-
-    "/boot" = {
-      device = "/dev/disk/by-label/BOOT";
-      fsType = "vfat";
-      options = [ "fmask=0022" "dmask=0022" ];
-    };
-  };
-
-  swapDevices = [
-    {
-      device = "/dev/disk/by-label/swap";
-    }
-  ];
-
   nixpkgs.hostPlatform = "x86_64-linux";
 
   networking = {
@@ -82,7 +62,7 @@ in
     # useDHCP = true;
 
     # my hostname depends on the machine
-    hostName = "evajig-" + (serial interface);
+    hostName = "evajig-" + (serial config.interface);
 
     # just use NetworkManager, it's easy!
     networkmanager.enable = true;
@@ -156,6 +136,6 @@ in
   '';
 
   users.users = lib.mergeAttrsList (map (u: { "${u.name}" = u.user; }) users);
-  home-manager.users = lib.mergeAttrsList (map (u: { "${u.name}" = ({ ... }: u.home-manager); }) users);
+  home-manager.users = lib.mergeAttrsList (map (u: { "${u.name}" = _: u.home-manager; }) users);
 }
 

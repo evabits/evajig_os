@@ -1,0 +1,15 @@
+- splash theme
+- ssh-root met key
+- remote update (via ver weg)
+- zerotier
+- auto-rollback
+- interface -> serial
+- niet slapen!
+
+---
+
+deployment strategy
+
+- testen Jan zijn casette
+- guide schrijven bootstrap en ontwikkeling/update
+- bootstrap guide/test

@@ -13,7 +13,7 @@ rec {
     extraGroups = [ "networkmanager" "dialout" ];
     shell = pkgs.zsh;
     openssh.authorizedKeys.keyFiles = [
-      ../keys/user-ssh-rsa.pub
+      #../keys/user-ssh-rsa.pub
     ];
   };
 
