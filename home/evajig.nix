@@ -2,6 +2,7 @@
 
 let
   productiontool = (import ../pkgs/productiontool.nix args);
+  evajig-config = import <evajig-config> {};
 in
 rec {
   name = "evajig";
@@ -12,9 +13,7 @@ rec {
     initialPassword = "evajig2024";
     extraGroups = [ "networkmanager" "dialout" ];
     shell = pkgs.zsh;
-    openssh.authorizedKeys.keyFiles = [
-      #../keys/user-ssh-rsa.pub
-    ];
+    openssh.authorizedKeys.keyFiles = evajig-config.openssh-keys.evajig;
   };
 
   home-manager = {

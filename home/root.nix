@@ -1,14 +1,14 @@
 { pkgs, ... }:
 
-rec {
+let
+   evajig-config = import <evajig-config> {};
+in rec {
   name = "root";
 
   user = {
     inherit name;
     initialPassword = "Evajig2024";
-    openssh.authorizedKeys.keyFiles = [
-      #../keys/root-ssh-rsa.pub
-    ];
+    openssh.authorizedKeys.keyFiles = evajig-config.openssh-keys.root;
   };
 
   home-manager = {

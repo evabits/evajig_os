@@ -1,9 +1,9 @@
 let 
-  config = import <evajig-config> {};
+  evajig-config = import <evajig-config> {};
 in {
   disko.devices.disk.main = {
     type = "disk";
-    device = config.disk;
+    device = evajig-config.disk;
     content = {
       type = "gpt";
       partitions = {

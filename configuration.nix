@@ -1,10 +1,10 @@
-{ pkgs, lib, device ? "/dev/sda", ... }@args:
+{ pkgs, lib, ... }@args:
 
 let
   serial = import ./helpers/serial.nix;
   users = import ./home args;
-
-  config = import <evajig-config> {};
+  
+  evajig-config = import <evajig-config> {};
 in
 {
   # initial version, not the current version. NEVER EVER EDIT ME!
@@ -15,7 +15,7 @@ in
   ];
 
   boot = {
-    initrd.availableKernelModules = [ "xhci_pci" "sdhci_pci" ];
+    initrd.availableKernelModules = [ "xhci_pci" "ehci_pci" "ahci" "usbhid" "sd_mod" "sr_mod" "sdhci_pci" ];
     # modules enabled in kernel-space
     kernelModules = [ "iwlwifi" ];
     # extra modules from nixpkg
@@ -62,7 +62,7 @@ in
     # useDHCP = true;
 
     # my hostname depends on the machine
-    hostName = "evajig-" + (serial config.interface);
+    hostName = "evajig-" + (serial evajig-config.interface);
 
     # just use NetworkManager, it's easy!
     networkmanager.enable = true;
