@@ -29,7 +29,8 @@ pkgs.appimageTools.wrapType2 rec {
 
   profile = ''
     export PYOCD_PROJECT_DIR=$(mktemp -d)
+    export EVAJIG_OS=NIXOS
 
-    echo "${builtins.toJSON pyocdConfig}" > $PYOCD_PROJECT_DIR/pyocd.yaml
+    echo '${builtins.toJSON pyocdConfig}' > $PYOCD_PROJECT_DIR/pyocd.yaml
   '';
 }
