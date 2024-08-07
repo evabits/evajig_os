@@ -1,16 +1,15 @@
-SUBSYSTEM=="usb", ACTION=="add", ATTRS{idVendor}=="dcba", ATTRS{idProduct}=="abcd", TAG+="uaccess"
+SUBSYSTEM=="usb", ACTION=="add", ATTRS{idVendor}=="dcba", ATTRS{idProduct}=="abcd", TAG+="uaccess", MODE="0666"
+SUBSYSTEM=="tty", ACTION=="add", ATTRS{idVendor}=="dcba", ATTRS{idProduct}=="abcd", GROUP="dialout"
 
 # Dapprobe ?
-SUBSYSTEM=="usb", ACTION=="add", ATTRS{idVendor}=="2e8a", ATTRS{idProduct}=="0005", TAG+="uaccess"
-SUBSYSTEM=="usb", ACTION=="add", ATTRS{idVendor}=="1209", ATTRS{idProduct}=="da42", TAG+="uaccess"
-
+SUBSYSTEM=="usb", ACTION=="add", ATTRS{idVendor}=="2e8a", ATTRS{idProduct}=="0005", TAG+="uaccess", MODE="0666"
+SUBSYSTEM=="usb", ACTION=="add", ATTRS{idVendor}=="1209", ATTRS{idProduct}=="da42", TAG+="uaccess", MODE="0666"
 
 # Camera
-SUBSYSTEM=="usb", ACTION=="add", ATTRS{idVendor}=="dcba", ATTRS{idProduct}=="caca", TAG+="uaccess"
+SUBSYSTEM=="usb", ACTION=="add", ATTRS{idVendor}=="dcba", ATTRS{idProduct}=="caca", TAG+="uaccess", MODE="0666"
 SUBSYSTEM=="tty", ACTION=="add", ATTRS{idVendor}=="dcba", ATTRS{idProduct}=="caca", GROUP="dialout"
+SUBSYSTEM=="usb", ACTION=="add", ATTRS{idVendor}=="dcba", ATTRS{idProduct}=="aaaa", TAG+="uaccess", MODE="0666"
 SUBSYSTEM=="tty", ACTION=="add", ATTRS{idVendor}=="dcba", ATTRS{idProduct}=="aaaa", GROUP="dialout"
-SUBSYSTEM=="usb", ACTION=="add", ATTRS{idVendor}=="dcba", ATTRS{idProduct}=="aaaa", TAG+="uaccess"
-
 
 
 # IO Module DFU
