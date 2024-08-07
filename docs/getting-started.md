@@ -19,6 +19,23 @@ Make sure you have internet. How to setup
 
 ## 3. Format and Mount
 
+create a config.nix
+```nix
+{...}: {
+  disk = "/dev/sda";
+  interface = "ens3";
+}
+```
+
+and make it visible by
 ```bash
-nix --experimental-features 'nix-command flakes' run github:nix-community/disko -- --mode disko -f github:evabits/evajig_os#disko
+export NIX_PATH="$NIX_PATH:evajig-config=./config.nix"
+```
+
+```bash
+nix --experimental-features 'nix-command flakes' run github:nix-community/disko -- --mode disko -f github:evabits/evajig_os#disko 
+```
+
+```bash
+nixos-install --flake github:evabits/evajig_os#evajig --impure
 ```
